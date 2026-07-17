@@ -2,7 +2,7 @@
 MarkClient — the core HTTP client for the Mark AI Agent Workflow Marketplace.
 
 Usage:
-    from marktools import MarkClient
+    from archaitools import MarkClient
 
     mark = MarkClient(api_key="mk_...")
 
@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import requests
 
-from marktools.exceptions import (
+from archaitools.exceptions import (
     AuthenticationError,
     InsufficientCreditsError,
     MarkError,
@@ -33,7 +33,7 @@ from marktools.exceptions import (
     SessionExpiredError,
     WorkflowNotFoundError,
 )
-from marktools.models import (
+from archaitools.models import (
     BalanceInfo,
     EstimateResult,
     HealthStatus,
@@ -64,14 +64,14 @@ class MarkClient:
         api_key: Your Mark API key (starts with ``mk_``). Falls back to
                  the ``MARK_API_KEY`` environment variable.
         base_url: Override the API base URL. Defaults to ``MARK_API_URL``
-                  env var or ``https://api.mark.ai``.
+                   env var or ``https://api.mark.ai``.
         user_id: User identifier for billing. Defaults to ``"default_user"``.
         timeout: Request timeout in seconds.
         max_retries: Number of retries on transient failures.
 
     Example::
 
-        from marktools import MarkClient
+        from archaitools import MarkClient
 
         mark = MarkClient()  # uses MARK_API_KEY env var
 
@@ -105,7 +105,7 @@ class MarkClient:
         self._session = requests.Session()
         self._session.headers.update({
             "Content-Type": "application/json",
-            "User-Agent": "marktools-python/0.1.0",
+            "User-Agent": "archaitools-python/0.1.0",
         })
         if self.api_key:
             self._session.headers["Authorization"] = f"Bearer {self.api_key}"

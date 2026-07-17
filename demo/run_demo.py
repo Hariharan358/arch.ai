@@ -3,13 +3,13 @@
 run_demo.py — The pitch demo for Mark AI.
 
 Runs two agents side-by-side on the SAME task (Ohio 2024 tax filing):
-  1. WITHOUT marktools — raw Claude reasoning from scratch
-  2. WITH marktools    — Claude + Mark AI marketplace
+  1. WITHOUT archaitools — raw Claude reasoning from scratch
+  2. WITH archaitools    — Claude + Mark AI marketplace
 
 Prints a beautiful terminal comparison showing:
   • Step-by-step execution of both agents
-  • Errors and missed edge cases (without marktools)
-  • Edge cases caught (with marktools)
+  • Errors and missed edge cases (without archaitools)
+  • Edge cases caught (with archaitools)
   • Final scorecard: accuracy, tokens, speed, cost
 
 Usage:
@@ -29,8 +29,8 @@ import argparse
 # Add demo directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from without_marktools import run_baseline_agent, BaselineTrace
-from with_marktools import run_marktools_agent, EnhancedTrace
+from without_archaitools import run_baseline_agent, BaselineTrace
+from with_archaitools import run_archaitools_agent, EnhancedTrace
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -97,7 +97,7 @@ def print_header(fast: bool):
 
 def print_baseline_run(trace: BaselineTrace, fast: bool):
     print(f"\n{C.BOLD}{C.RED}{'─' * 70}{C.RESET}")
-    print(f"{C.BOLD}{C.RED}  ❌  AGENT WITHOUT marktools  (Raw Claude — no marketplace){C.RESET}")
+    print(f"{C.BOLD}{C.RED}  ❌  AGENT WITHOUT archaitools  (Raw Claude — no marketplace){C.RESET}")
     print(f"{C.BOLD}{C.RED}{'─' * 70}{C.RESET}\n")
     pause(0.5, fast)
 
@@ -135,9 +135,9 @@ def print_baseline_run(trace: BaselineTrace, fast: bool):
     pause(1.0, fast)
 
 
-def print_marktools_run(trace: EnhancedTrace, fast: bool):
+def print_archaitools_run(trace: EnhancedTrace, fast: bool):
     print(f"\n{C.BOLD}{C.GREEN}{'─' * 70}{C.RESET}")
-    print(f"{C.BOLD}{C.GREEN}  ✅  AGENT WITH marktools  (pip install marktools){C.RESET}")
+    print(f"{C.BOLD}{C.GREEN}  ✅  AGENT WITH archaitools  (pip install archaitools){C.RESET}")
     print(f"{C.BOLD}{C.GREEN}{'─' * 70}{C.RESET}\n")
     pause(0.5, fast)
 
@@ -213,8 +213,8 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
 
     # ── Accuracy ──────────────────────────────────────────────────────────
     print(f"  {C.BOLD}ACCURACY{C.RESET}")
-    print(f"    Without marktools:  {bar(baseline.accuracy_score, 100, 30, C.RED)}  {C.RED}{baseline.accuracy_score}%{C.RESET}")
-    print(f"    With marktools:     {bar(enhanced.accuracy_score, 100, 30, C.GREEN)}  {C.GREEN}{enhanced.accuracy_score}%{C.RESET}")
+    print(f"    Without archaitools: {bar(baseline.accuracy_score, 100, 30, C.RED)}  {C.RED}{baseline.accuracy_score}%{C.RESET}")
+    print(f"    With archaitools:    {bar(enhanced.accuracy_score, 100, 30, C.GREEN)}  {C.GREEN}{enhanced.accuracy_score}%{C.RESET}")
     improvement = enhanced.accuracy_score - baseline.accuracy_score
     print(f"    {C.BOLD}{C.GREEN}↑ +{improvement:.0f} percentage points{C.RESET}")
     pause(0.5, fast)
@@ -222,8 +222,8 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
     # ── Token Usage ───────────────────────────────────────────────────────
     max_tokens = max(baseline.total_tokens, enhanced.total_tokens)
     print(f"\n  {C.BOLD}TOKEN USAGE{C.RESET}")
-    print(f"    Without marktools:  {bar(baseline.total_tokens, max_tokens, 30, C.RED)}  {C.RED}{baseline.total_tokens:,} tokens{C.RESET}")
-    print(f"    With marktools:     {bar(enhanced.total_tokens, max_tokens, 30, C.GREEN)}  {C.GREEN}{enhanced.total_tokens:,} tokens{C.RESET}")
+    print(f"    Without archaitools: {bar(baseline.total_tokens, max_tokens, 30, C.RED)}  {C.RED}{baseline.total_tokens:,} tokens{C.RESET}")
+    print(f"    With archaitools:    {bar(enhanced.total_tokens, max_tokens, 30, C.GREEN)}  {C.GREEN}{enhanced.total_tokens:,} tokens{C.RESET}")
     saved = baseline.total_tokens - enhanced.total_tokens
     pct = (saved / baseline.total_tokens * 100) if baseline.total_tokens > 0 else 0
     print(f"    {C.BOLD}{C.GREEN}↓ {saved:,} tokens saved ({pct:.0f}% reduction){C.RESET}")
@@ -232,8 +232,8 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
     # ── Latency ───────────────────────────────────────────────────────────
     max_latency = max(baseline.total_latency_ms, enhanced.total_latency_ms)
     print(f"\n  {C.BOLD}LATENCY{C.RESET}")
-    print(f"    Without marktools:  {bar(baseline.total_latency_ms, max_latency, 30, C.RED)}  {C.RED}{baseline.total_latency_ms/1000:.1f}s{C.RESET}")
-    print(f"    With marktools:     {bar(enhanced.total_latency_ms, max_latency, 30, C.GREEN)}  {C.GREEN}{enhanced.total_latency_ms/1000:.1f}s{C.RESET}")
+    print(f"    Without archaitools: {bar(baseline.total_latency_ms, max_latency, 30, C.RED)}  {C.RED}{baseline.total_latency_ms/1000:.1f}s{C.RESET}")
+    print(f"    With archaitools:    {bar(enhanced.total_latency_ms, max_latency, 30, C.GREEN)}  {C.GREEN}{enhanced.total_latency_ms/1000:.1f}s{C.RESET}")
     time_saved = baseline.total_latency_ms - enhanced.total_latency_ms
     time_pct = (time_saved / baseline.total_latency_ms * 100) if baseline.total_latency_ms > 0 else 0
     print(f"    {C.BOLD}{C.GREEN}↓ {time_saved/1000:.1f}s faster ({time_pct:.0f}% reduction){C.RESET}")
@@ -241,25 +241,25 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
 
     # ── Steps ─────────────────────────────────────────────────────────────
     print(f"\n  {C.BOLD}AGENT STEPS{C.RESET}")
-    print(f"    Without marktools:  {C.RED}{len(baseline.steps)} steps (8 reasoning passes, 0 tool calls){C.RESET}")
+    print(f"    Without archaitools: {C.RED}{len(baseline.steps)} steps (8 reasoning passes, 0 tool calls){C.RESET}")
     total_tc = sum(len(s.tool_calls) for s in enhanced.steps)
-    print(f"    With marktools:     {C.GREEN}{len(enhanced.steps)} steps ({total_tc} tool calls, targeted reasoning){C.RESET}")
+    print(f"    With archaitools:    {C.GREEN}{len(enhanced.steps)} steps ({total_tc} tool calls, targeted reasoning){C.RESET}")
     pause(0.5, fast)
 
     # ── Errors ────────────────────────────────────────────────────────────
     print(f"\n  {C.BOLD}ERRORS & EDGE CASES{C.RESET}")
-    print(f"    Without marktools:  {C.RED}{len(baseline.errors)} errors, {len(baseline.missed_edge_cases)} missed edge cases{C.RESET}")
-    print(f"    With marktools:     {C.GREEN}0 errors, {len(enhanced.edge_cases_caught)} edge cases caught ✓{C.RESET}")
+    print(f"    Without archaitools: {C.RED}{len(baseline.errors)} errors, {len(baseline.missed_edge_cases)} missed edge cases{C.RESET}")
+    print(f"    With archaitools:    {C.GREEN}0 errors, {len(enhanced.edge_cases_caught)} edge cases caught ✓{C.RESET}")
     pause(0.5, fast)
 
     # ── Dollar Impact ─────────────────────────────────────────────────────
     print(f"\n  {C.BOLD}REAL-WORLD IMPACT{C.RESET}")
-    print(f"    {C.RED}Without marktools:{C.RESET}")
+    print(f"    {C.RED}Without archaitools:{C.RESET}")
     print(f"      • Applied SALT cap incorrectly → taxpayer overpays ~$2,000")
     print(f"      • Missed $650 Joint Filing Credit → another $650 lost")
     print(f"      • Used wrong brackets → incorrect total")
     print(f"      • Skipped school district + city tax → potential IRS penalty")
-    print(f"    {C.GREEN}With marktools:{C.RESET}")
+    print(f"    {C.GREEN}With archaitools:{C.RESET}")
     print(f"      • Every edge case caught from expert-verified workflow")
     print(f"      • Correct tax estimate: ~$980 state + ~$2,125 city")
     print(f"      • All required forms identified (IT-1040, Schedule A, SD-100, RITA)")
@@ -269,12 +269,12 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
     # ── Summary Box ───────────────────────────────────────────────────────
     print(f"\n{C.BOLD}{C.CYAN}  ┌──────────────────────────────────────────────────────────────┐{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  │                                                              │{C.RESET}")
-    print(f"{C.BOLD}{C.CYAN}  │   marktools turns a 37.5% accurate, 8-step guessing game     │{C.RESET}")
+    print(f"{C.BOLD}{C.CYAN}  │   archaitools turns a 37.5% accurate, 8-step guessing game   │{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  │   into a 100% accurate, 4-step workflow with 6 edge cases    │{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  │   caught — while using {pct:.0f}% fewer tokens.                     │{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  │                                                              │{C.RESET}")
-    print(f"{C.BOLD}{C.CYAN}  │   pip install marktools                                      │{C.RESET}")
-    print(f"{C.BOLD}{C.CYAN}  │   https://pypi.org/project/marktools/                        │{C.RESET}")
+    print(f"{C.BOLD}{C.CYAN}  │   pip install archaitools                                    │{C.RESET}")
+    print(f"{C.BOLD}{C.CYAN}  │   https://pypi.org/project/archaitools/                      │{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  │                                                              │{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}  └──────────────────────────────────────────────────────────────┘{C.RESET}\n")
 
@@ -284,13 +284,13 @@ def export_json(baseline: BaselineTrace, enhanced: EnhancedTrace):
     results = {
         "task": baseline.task,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "without_marktools": {
+        "without_archaitools": {
             **baseline.to_dict(),
             "label": "Raw Claude (no marketplace)",
         },
-        "with_marktools": {
+        "with_archaitools": {
             **enhanced.to_dict(),
-            "label": "Claude + marktools",
+            "label": "Claude + archaitools",
         },
         "comparison": {
             "accuracy_improvement": f"+{enhanced.accuracy_score - baseline.accuracy_score:.0f}pp",
@@ -324,15 +324,15 @@ def main():
     # ── Run both agents ───────────────────────────────────────────────────
     print_header(fast)
 
-    typewrite(f"  {C.BOLD}Running baseline agent (without marktools)...{C.RESET}", fast)
+    typewrite(f"  {C.BOLD}Running baseline agent (without archaitools)...{C.RESET}", fast)
     pause(0.5, fast)
     baseline = run_baseline_agent(task)
     print_baseline_run(baseline, fast)
 
-    typewrite(f"\n  {C.BOLD}Running enhanced agent (with marktools)...{C.RESET}", fast)
+    typewrite(f"\n  {C.BOLD}Running enhanced agent (with archaitools)...{C.RESET}", fast)
     pause(0.5, fast)
-    enhanced = run_marktools_agent(task, baseline_tokens=baseline.total_tokens)
-    print_marktools_run(enhanced, fast)
+    enhanced = run_archaitools_agent(task, baseline_tokens=baseline.total_tokens)
+    print_archaitools_run(enhanced, fast)
 
     # ── Scorecard ─────────────────────────────────────────────────────────
     print_scorecard(baseline, enhanced, fast)

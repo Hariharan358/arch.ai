@@ -42,7 +42,7 @@ export default function Nav() {
   return (
     <nav className={styles.nav}>
       <Link href="/" className={styles.navLogo}>
-        mark<span>.</span>
+        arch<span>.</span>ai
       </Link>
       <div className={styles.navLinks}>
         <Link href="/marketplace">Marketplace</Link>

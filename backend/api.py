@@ -661,19 +661,19 @@ SDK_TOOLS = [
 
 @app.route("/api/sdk/info", methods=["GET"])
 def sdk_info():
-    """SDK package information for pip install marktools."""
+    """SDK package information for pip install archaitools."""
     return jsonify({
-        "package": "marktools",
+        "package": "archaitools",
         "version": SDK_VERSION,
-        "install": "pip install marktools",
-        "pypi_url": "https://pypi.org/project/marktools/",
+        "install": "pip install archaitools",
+        "pypi_url": "https://pypi.org/project/archaitools/",
         "github": "https://github.com/akhaire21/treehacks-2026",
         "docs": "https://docs.mark.ai",
         "description": "SDK for the Mark AI Agent Workflow Marketplace",
         "quick_start": {
-            "install": "pip install marktools",
+            "install": "pip install archaitools",
             "usage": [
-                "from marktools import MarkClient",
+                "from archaitools import MarkClient",
                 "",
                 "mark = MarkClient(api_key='mk_...')",
                 "",
@@ -724,7 +724,7 @@ def sdk_examples():
     return jsonify({
         "anthropic_claude": {
             "title": "Use with Anthropic Claude",
-            "code": '''from marktools import MarkTools
+            "code": '''from archaitools import MarkTools
 from anthropic import Anthropic
 
 mark = MarkTools(api_key="mk_...")
@@ -743,7 +743,7 @@ for block in response.content:
         },
         "openai_gpt4": {
             "title": "Use with OpenAI GPT-4",
-            "code": '''from marktools import MarkTools
+            "code": '''from archaitools import MarkTools
 from openai import OpenAI
 
 mark = MarkTools(api_key="mk_...")
@@ -757,7 +757,7 @@ response = client.chat.completions.create(
         },
         "direct_client": {
             "title": "Direct Client Usage",
-            "code": '''from marktools import MarkClient
+            "code": '''from archaitools import MarkClient
 
 mark = MarkClient(api_key="mk_...")
 
@@ -855,7 +855,7 @@ if __name__ == "__main__":
     print(f"  Orchestrator     : {'ready' if orchestrator else 'disabled'}")
     print(f"  JINA Embeddings  : {'active' if elastic_client else 'off'}")
     print(f"  Commerce Engine  : active")
-    print(f"  SDK package      : marktools v{SDK_VERSION}")
+    print(f"  SDK package      : archaitools v{SDK_VERSION}")
     print(f"  Server           : http://localhost:{port}")
     print()
     print("  Endpoints:")

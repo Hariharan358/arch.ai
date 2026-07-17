@@ -1,5 +1,5 @@
 """
-Pydantic models for the marktools SDK.
+Pydantic models for the archaitools SDK.
 
 These models provide typed, validated representations of all API responses.
 They mirror the backend models.py but are designed for SDK consumers.

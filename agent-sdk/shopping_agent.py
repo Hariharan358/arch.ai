@@ -3,7 +3,7 @@ shopping_agent.py — Autonomous Shopping & Commerce Agent
 
 Demonstrates:
   ✅ Claude Agent SDK (Anthropic tool_use loop)
-  ✅ marktools integration (pip install marktools)
+  ✅ archaitools integration (pip install archaitools)
   ✅ Multi-turn commerce reasoning
   ✅ Budget-aware purchasing
 

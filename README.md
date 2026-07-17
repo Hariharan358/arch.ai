@@ -19,11 +19,11 @@ Every time an AI agent encounters a task — filing Ohio taxes, parsing a Stripe
 A marketplace of **reusable reasoning workflows** — hyper-specific, battle-tested solution templates that agents buy and execute locally with their own private data.
 
 ```bash
-pip install marktools
+pip install archaitools
 ```
 
 ```python
-from marktools import MarkClient
+from archaitools import MarkClient
 
 mark = MarkClient(api_key="mk_...")
 
@@ -42,7 +42,7 @@ Three lines of code. Any AI agent (Claude, GPT-4, LangChain) gets access to an e
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [SDK — `marktools`](#sdk--marktools)
+- [SDK — `archaitools`](#sdk--archaitools)
 - [API Reference](#api-reference)
 - [Search Algorithm](#search-algorithm)
 - [Dynamic Pricing](#dynamic-pricing)
@@ -75,8 +75,8 @@ Three lines of code. Any AI agent (Claude, GPT-4, LangChain) gets access to an e
 │                     └──────────────┘                         │
 │                                                               │
 │  ┌─────────────────────────────────────────────────────────┐ │
-│  │                    marktools SDK                         │ │
-│  │  pip install marktools                                   │ │
+│  │                    archaitools SDK                        │ │
+│  │  pip install archaitools                                 │ │
 │  │  Agents call: estimate → buy → execute → rate            │ │
 │  └─────────────────────────────────────────────────────────┘ │
 └──────────────────────────────────────────────────────────────┘
@@ -160,8 +160,8 @@ mark-ai/
 │
 ├── demo/                         # Pitch demo
 │   ├── run_demo.py               #   Self-contained demo runner
-│   ├── with_marktools.py         #   Agent with marktools
-│   ├── without_marktools.py      #   Baseline agent (no marktools)
+│   ├── with_archaitools.py       #   Agent with archaitools
+│   ├── without_archaitools.py    #   Baseline agent (no archaitools)
 │   └── benchmark_suite.py        #   Performance benchmarks
 │
 ├── lib/supabase/                 # Supabase client helpers
@@ -239,7 +239,7 @@ Open `http://localhost:3000`.
 ### 3. SDK (optional)
 
 ```bash
-pip install marktools
+pip install archaitools
 ```
 
 Or install from source:
@@ -269,24 +269,24 @@ NEXT_PUBLIC_API_URL=http://localhost:5001
 
 ---
 
-## SDK — `marktools`
+## SDK — `archaitools`
 
 The Python SDK that lets any AI agent tap into the marketplace.
 
 ### Installation
 
 ```bash
-pip install marktools                   # core
-pip install marktools[anthropic]        # + Claude support
-pip install marktools[openai]           # + OpenAI support
-pip install marktools[all]              # everything
+pip install archaitools                   # core
+pip install archaitools[anthropic]        # + Claude support
+pip install archaitools[openai]           # + OpenAI support
+pip install archaitools[all]              # everything
 ```
 
 ### Usage with Claude
 
 ```python
 import anthropic
-from marktools import MarkTools
+from archaitools import MarkTools
 
 client = anthropic.Anthropic()
 tools = MarkTools(api_key="mk_...")
@@ -303,7 +303,7 @@ response = client.messages.create(
 
 ```python
 from openai import OpenAI
-from marktools import MarkTools
+from archaitools import MarkTools
 
 client = OpenAI()
 tools = MarkTools(api_key="mk_...")
@@ -318,7 +318,7 @@ response = client.chat.completions.create(
 ### Direct Client
 
 ```python
-from marktools import MarkClient
+from archaitools import MarkClient
 
 mark = MarkClient(api_key="mk_...")
 receipt = mark.solve("File Ohio 2024 taxes with W2 and itemized deductions")
@@ -494,8 +494,8 @@ python demo/run_demo.py --fast   # skip animations
 python demo/run_demo.py --json   # export results
 ```
 
-| Metric | Without marktools | With marktools | Delta |
-|--------|-------------------|----------------|-------|
+| Metric | Without archaitools | With archaitools | Delta |
+|--------|---------------------|------------------|-------|
 | Accuracy | 37.5% | 100% | +62.5pp |
 | Tokens | 4,390 | 1,330 | **−70%** |
 | Latency | 8.5s | 3.8s | −55% |
@@ -506,7 +506,7 @@ python demo/run_demo.py --json   # export results
 
 ```bash
 cd agent-sdk
-pip install marktools anthropic rich
+pip install archaitools anthropic rich
 export ANTHROPIC_API_KEY=sk-ant-...
 
 python tax_agent.py              # Ohio tax filing

@@ -52,12 +52,12 @@ export default function DocsPage() {
       <main className={styles.main}>
         <div className={styles.header}>
           <div className={styles.badge}>Documentation</div>
-          <h1>marktools</h1>
+          <h1>archaitools</h1>
           <p className={styles.subtitle}>
             The Python SDK that lets AI agents buy pre-solved reasoning workflows.
           </p>
           <div className={styles.installRow}>
-            <code className={styles.installCode}>pip install marktools</code>
+            <code className={styles.installCode}>pip install archaitools</code>
           </div>
         </div>
 
@@ -80,18 +80,18 @@ export default function DocsPage() {
             {activeTab === 'quickstart' && (
               <div className={styles.section}>
                 <h2>Quick Start</h2>
-                <p>Get started with marktools in 3 lines of code.</p>
+                <p>Get started with archaitools in 3 lines of code.</p>
 
                 <h3>Installation</h3>
-                <CodeBlock filename="terminal" code={`pip install marktools
+                <CodeBlock filename="terminal" code={`pip install archaitools
 
 # With framework extras
-pip install marktools[anthropic]   # Anthropic Claude support
-pip install marktools[openai]      # OpenAI GPT support
-pip install marktools[all]         # All frameworks`} />
+pip install archaitools[anthropic]   # Anthropic Claude support
+pip install archaitools[openai]      # OpenAI GPT support
+pip install archaitools[all]         # All frameworks`} />
 
                 <h3>Basic Usage</h3>
-                <CodeBlock filename="main.py" code={`from marktools import MarkClient
+                <CodeBlock filename="main.py" code={`from archaitools import MarkClient
 
 mark = MarkClient(api_key="mk_...")  # or set MARK_API_KEY env var
 
@@ -129,10 +129,10 @@ print(f"Tokens charged: {receipt.tokens_charged}")`} />
               <div className={styles.section}>
                 <h2>Use with Anthropic Claude</h2>
                 <p>
-                  marktools provides native Anthropic tool_use format. Claude can autonomously
+                  archaitools provides native Anthropic tool_use format. Claude can autonomously
                   search, buy, and rate marketplace workflows.
                 </p>
-                <CodeBlock filename="basic.py" code={`from marktools import MarkTools
+                <CodeBlock filename="basic.py" code={`from archaitools import MarkTools
 from anthropic import Anthropic
 
 mark = MarkTools(api_key="mk_...")
@@ -153,7 +153,7 @@ for block in response.content:
         # Return result to Claude as tool_result`} />
 
                 <h3>Full Agent Loop</h3>
-                <CodeBlock filename="agent.py" code={`from marktools import MarkTools
+                <CodeBlock filename="agent.py" code={`from archaitools import MarkTools
 from anthropic import Anthropic
 
 mark = MarkTools(api_key="mk_...")
@@ -199,10 +199,10 @@ while True:
               <div className={styles.section}>
                 <h2>Use with OpenAI GPT-4</h2>
                 <p>
-                  marktools generates OpenAI-compatible function calling definitions.
+                  archaitools generates OpenAI-compatible function calling definitions.
                   Works with GPT-4o, GPT-4, and any model that supports function calling.
                 </p>
-                <CodeBlock filename="openai_agent.py" code={`from marktools import MarkTools
+                <CodeBlock filename="openai_agent.py" code={`from archaitools import MarkTools
 from openai import OpenAI
 import json
 
@@ -232,7 +232,7 @@ for call in response.choices[0].message.tool_calls or []:
                 <p>The core HTTP client for direct API access.</p>
 
                 <h3>Initialization</h3>
-                <CodeBlock code={`from marktools import MarkClient
+                <CodeBlock code={`from archaitools import MarkClient
 
 # API key from parameter
 mark = MarkClient(api_key="mk_...")
@@ -279,7 +279,7 @@ mark = MarkClient(base_url="http://localhost:5001")`} />
             {activeTab === 'tools' && (
               <div className={styles.section}>
                 <h2>Tool Definitions</h2>
-                <p>marktools exposes 4 tools that AI agents can call:</p>
+                <p>archaitools exposes 4 tools that AI agents can call:</p>
 
                 {tools.length > 0 ? (
                   tools.map((tool: any, i: number) => (
@@ -330,7 +330,7 @@ mark = MarkClient(base_url="http://localhost:5001")`} />
                 )}
 
                 <h3>Format Conversion</h3>
-                <CodeBlock code={`from marktools import MarkTools
+                <CodeBlock code={`from archaitools import MarkTools
 
 tools = MarkTools(api_key="mk_...")
 
@@ -346,7 +346,7 @@ tools.to_json_schema()   # Raw JSON schema`} />
                 <h2>Response Models</h2>
                 <p>All API responses are typed Pydantic models with full IDE autocomplete.</p>
 
-                <CodeBlock filename="models.py" code={`from marktools import (
+                <CodeBlock filename="models.py" code={`from archaitools import (
     Workflow,           # Marketplace workflow template
     Solution,           # Ranked solution candidate
     EstimateResult,     # Response from estimate()

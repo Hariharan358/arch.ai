@@ -13,7 +13,7 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('pip install marktools')
+    navigator.clipboard.writeText('pip install archaitools')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -23,38 +23,35 @@ export default function Hero() {
     if (!isDeleting) {
       setDisplayed(currentWord.slice(0, displayed.length + 1))
       if (displayed.length + 1 === currentWord.length) {
-        setTimeout(() => setIsDeleting(true), 1800)
-        return
+        setTimeout(() => setIsDeleting(true), 1500)
       }
     } else {
       setDisplayed(currentWord.slice(0, displayed.length - 1))
-      if (displayed.length - 1 === 0) {
+      if (displayed.length === 0) {
         setIsDeleting(false)
-        setWordIndex((wordIndex + 1) % ROTATING_WORDS.length)
-        return
+        setWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length)
       }
     }
-  }, [displayed, isDeleting, wordIndex])
+  }, [wordIndex, displayed, isDeleting])
 
   useEffect(() => {
-    const speed = isDeleting ? 50 : 100
-    const timer = setTimeout(tick, speed)
+    const timer = setTimeout(tick, isDeleting ? 75 : 150)
     return () => clearTimeout(timer)
-  }, [tick, isDeleting])
+  }, [displayed, isDeleting, tick])
 
   return (
     <section className={styles.hero}>
       <div className={styles.heroGlow}></div>
-      <h1>
-        intelligence is now
+      <h1 className={styles.heroTitle}>
+        Making AI agent reasoning
         <br />
         <em>{displayed}</em>
         <span className={styles.cursor}>|</span>
       </h1>
-      <a href="https://pypi.org/project/marktools/" target="_blank" rel="noopener noreferrer" className={styles.installBar} style={{ textDecoration: 'none' }}>
-        <div className={styles.installLabel}>Get MarkTools <span className={styles.installChevron}></span></div>
+      <a href="https://pypi.org/project/archaitools/" target="_blank" rel="noopener noreferrer" className={styles.installBar} style={{ textDecoration: 'none' }}>
+        <div className={styles.installLabel}>Get ArchaiTools <span className={styles.installChevron}></span></div>
         <div className={styles.installCommand}>
-          <code><span className={styles.installCmd}>pip</span> <span className={styles.installFlag}>install</span> <span className={styles.installPkg}>marktools</span></code>
+          <code><span className={styles.installCmd}>pip</span> <span className={styles.installFlag}>install</span> <span className={styles.installPkg}>archaitools</span></code>
           <button className={styles.installCopy} onClick={handleCopy} aria-label="Copy command">
             {copied ? (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>
@@ -71,9 +68,9 @@ export default function Hero() {
       </div>
       <div className={styles.heroCode}>
         <pre>
-          <span className={styles.cmt}># pip install marktools</span>
+          <span className={styles.cmt}># pip install archaitools</span>
           {'\n'}
-          <span className={styles.kw}>from</span> marktools <span className={styles.kw}>import</span>{' '}
+          <span className={styles.kw}>from</span> archaitools <span className={styles.kw}>import</span>{' '}
           <span className={styles.fn}>MarkTools</span>
           {'\n\n'}
           <span className={styles.cmt}># Drop into any agent framework</span>

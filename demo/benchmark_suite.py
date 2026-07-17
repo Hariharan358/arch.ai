@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-benchmark_suite.py — Comprehensive Benchmark Suite for marktools.
+benchmark_suite.py — Comprehensive Benchmark Suite for archaitools.
 
 Runs a suite of 15 scenarios (simple → medium → difficult) drawn from
 real workflows.json entries. For each scenario it simulates an agent
-WITHOUT marktools (raw reasoning) vs WITH marktools (marketplace-
+WITHOUT archaitools (raw reasoning) vs WITH archaitools (marketplace-
 enhanced) and measures:
 
   • Accuracy (% correct steps)
@@ -15,7 +15,7 @@ enhanced) and measures:
   • Error rate
 
 Then it aggregates across ALL scenarios to produce headline metrics
-for the marktools pitch.
+for the archaitools pitch.
 
 Usage:
     python demo/benchmark_suite.py              # Full table + summary
@@ -111,7 +111,7 @@ class ScenarioResult:
     speed_improvement_pct: float
     latency_saved_ms: float
     errors_eliminated: int
-    edge_cases_delta: int            # caught by marktools that baseline missed
+    edge_cases_delta: int            # caught by archaitools that baseline missed
     cost_without_usd: float          # approx at $3/M tokens
     cost_with_usd: float
     cost_savings_usd: float
@@ -724,10 +724,10 @@ def run_all_scenarios() -> Tuple[List[ScenarioResult], Dict[str, Any]]:
 
         # Errors & Edge Cases
         "total_errors_baseline": total_errors,
-        "total_errors_marktools": 0,
+        "total_errors_archaitools": 0,
         "errors_eliminated_pct": 100.0,
         "total_edge_cases_missed_baseline": total_edge_cases_missed,
-        "total_edge_cases_caught_marktools": total_edge_cases_caught,
+        "total_edge_cases_caught_archaitools": total_edge_cases_caught,
 
         # Steps
         "avg_steps_without": round(sum(r.scenario.num_steps_without for r in results) / n, 1),
@@ -816,8 +816,8 @@ def print_aggregate_metrics(agg: Dict[str, Any], fast: bool = False):
 
     # ── 1. ACCURACY ──────────────────────────────────────────────────────
     print(f"  {C.BOLD}1. ACCURACY{C.RESET}")
-    print(f"     Without marktools:  {bar(agg['avg_accuracy_without_pct'], 100, 25, C.RED)}  {C.RED}{agg['avg_accuracy_without_pct']:.1f}%{C.RESET}")
-    print(f"     With marktools:     {bar(agg['avg_accuracy_with_pct'], 100, 25, C.GREEN)}  {C.GREEN}{agg['avg_accuracy_with_pct']:.1f}%{C.RESET}")
+    print(f"     Without archaitools: {bar(agg['avg_accuracy_without_pct'], 100, 25, C.RED)}  {C.RED}{agg['avg_accuracy_without_pct']:.1f}%{C.RESET}")
+    print(f"     With archaitools:    {bar(agg['avg_accuracy_with_pct'], 100, 25, C.GREEN)}  {C.GREEN}{agg['avg_accuracy_with_pct']:.1f}%{C.RESET}")
     print(f"     {C.BOLD}{C.GREEN}↑ +{agg['avg_accuracy_improvement_pp']:.1f} percentage points improvement{C.RESET}")
     print(f"     {C.DIM}Worst baseline: {agg['min_accuracy_without_pct']}%  |  Best enhanced: {agg['max_accuracy_with_pct']}%{C.RESET}")
     if not fast: time.sleep(0.3)
@@ -825,30 +825,30 @@ def print_aggregate_metrics(agg: Dict[str, Any], fast: bool = False):
     # ── 2. TOKEN USAGE ────────────────────────────────────────────────────
     max_tok = max(agg["total_tokens_without"], agg["total_tokens_with"])
     print(f"\n  {C.BOLD}2. TOKEN USAGE{C.RESET}")
-    print(f"     Without marktools:  {bar(agg['total_tokens_without'], max_tok, 25, C.RED)}  {C.RED}{agg['total_tokens_without']:>8,} tokens{C.RESET}")
-    print(f"     With marktools:     {bar(agg['total_tokens_with'], max_tok, 25, C.GREEN)}  {C.GREEN}{agg['total_tokens_with']:>8,} tokens{C.RESET}")
+    print(f"     Without archaitools: {bar(agg['total_tokens_without'], max_tok, 25, C.RED)}  {C.RED}{agg['total_tokens_without']:>8,} tokens{C.RESET}")
+    print(f"     With archaitools:    {bar(agg['total_tokens_with'], max_tok, 25, C.GREEN)}  {C.GREEN}{agg['total_tokens_with']:>8,} tokens{C.RESET}")
     print(f"     {C.BOLD}{C.GREEN}↓ {agg['total_tokens_saved']:,} tokens saved ({agg['avg_token_reduction_pct']:.1f}% avg reduction){C.RESET}")
     if not fast: time.sleep(0.3)
 
     # ── 3. SPEED / LATENCY ────────────────────────────────────────────────
     max_lat = max(agg["total_latency_without_ms"], agg["total_latency_with_ms"])
     print(f"\n  {C.BOLD}3. SPEED / LATENCY{C.RESET}")
-    print(f"     Without marktools:  {bar(agg['total_latency_without_ms'], max_lat, 25, C.RED)}  {C.RED}{agg['total_latency_without_ms']/1000:.1f}s total{C.RESET}")
-    print(f"     With marktools:     {bar(agg['total_latency_with_ms'], max_lat, 25, C.GREEN)}  {C.GREEN}{agg['total_latency_with_ms']/1000:.1f}s total{C.RESET}")
+    print(f"     Without archaitools: {bar(agg['total_latency_without_ms'], max_lat, 25, C.RED)}  {C.RED}{agg['total_latency_without_ms']/1000:.1f}s total{C.RESET}")
+    print(f"     With archaitools:    {bar(agg['total_latency_with_ms'], max_lat, 25, C.GREEN)}  {C.GREEN}{agg['total_latency_with_ms']/1000:.1f}s total{C.RESET}")
     time_saved = (agg["total_latency_without_ms"] - agg["total_latency_with_ms"]) / 1000
     print(f"     {C.BOLD}{C.GREEN}↓ {time_saved:.1f}s faster ({agg['avg_speed_improvement_pct']:.1f}% avg improvement){C.RESET}")
     if not fast: time.sleep(0.3)
 
     # ── 4. ERRORS & EDGE CASES ────────────────────────────────────────────
     print(f"\n  {C.BOLD}4. ERRORS & EDGE CASES{C.RESET}")
-    print(f"     Baseline errors:       {C.RED}{agg['total_errors_baseline']}{C.RESET}  →  marktools errors: {C.GREEN}0{C.RESET}  ({C.GREEN}100% eliminated{C.RESET})")
-    print(f"     Baseline edge missed:  {C.RED}{agg['total_edge_cases_missed_baseline']}{C.RESET}  →  marktools caught: {C.GREEN}{agg['total_edge_cases_caught_marktools']}{C.RESET}")
+    print(f"     Baseline errors:       {C.RED}{agg['total_errors_baseline']}{C.RESET}  →  archaitools errors: {C.GREEN}0{C.RESET}  ({C.GREEN}100% eliminated{C.RESET})")
+    print(f"     Baseline edge missed:  {C.RED}{agg['total_edge_cases_missed_baseline']}{C.RESET}  →  archaitools caught: {C.GREEN}{agg['total_edge_cases_caught_archaitools']}{C.RESET}")
     if not fast: time.sleep(0.3)
 
     # ── 5. AGENT STEPS ────────────────────────────────────────────────────
     print(f"\n  {C.BOLD}5. AGENT STEPS{C.RESET}")
-    print(f"     Avg without marktools:  {C.RED}{agg['avg_steps_without']:.1f} steps{C.RESET}  (raw reasoning, many passes)")
-    print(f"     Avg with marktools:     {C.GREEN}{agg['avg_steps_with']:.1f} steps{C.RESET}  (estimate → buy → present → rate)")
+    print(f"     Avg without archaitools: {C.RED}{agg['avg_steps_without']:.1f} steps{C.RESET}  (raw reasoning, many passes)")
+    print(f"     Avg with archaitools:    {C.GREEN}{agg['avg_steps_with']:.1f} steps{C.RESET}  (estimate → buy → present → rate)")
     print(f"     {C.BOLD}{C.GREEN}↓ {agg['step_reduction_pct']:.0f}% fewer steps{C.RESET}")
     if not fast: time.sleep(0.3)
 

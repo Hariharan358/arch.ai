@@ -247,7 +247,7 @@ export default function SDKPage() {
           </h1>
           <p className={styles.heroSub}>
             Live simulations of Claude agents autonomously searching, purchasing, and executing
-            marketplace workflows via <code>marktools</code>.
+            marketplace workflows via <code>archaitools</code>.
           </p>
         </div>
 
@@ -268,8 +268,8 @@ export default function SDKPage() {
             <div className={styles.archChip}>
               <span className={styles.archChipIcon}>mk</span>
               <div>
-                <div className={styles.archChipTitle}>marktools</div>
-                <div className={styles.archChipSub}>pip install marktools</div>
+                <div className={styles.archChipTitle}>archaitools</div>
+                <div className={styles.archChipSub}>pip install archaitools</div>
               </div>
             </div>
             <div className={styles.archConnector}>
@@ -279,7 +279,7 @@ export default function SDKPage() {
             <div className={styles.archChip}>
               <span className={styles.archChipIcon}>{'{ }'}</span>
               <div>
-                <div className={styles.archChipTitle}>Mark API</div>
+                <div className={styles.archChipTitle}>arch.ai API</div>
                 <div className={styles.archChipSub}>Search + Commerce</div>
               </div>
             </div>
@@ -461,12 +461,12 @@ export default function SDKPage() {
         <section className={styles.codeSection}>
           <div className={styles.sectionLabel}>Build your own agent</div>
           <p className={styles.codeSub}>
-            Everything above runs on <code>marktools</code>. Here&apos;s the full agent loop:
+            Everything above runs on <code>archaitools</code>. Here&apos;s the full agent loop:
           </p>
           <div className={styles.codeWrapper}>
             <div className={styles.codeBar}>
               <span>agent.py</span>
-              <CopyButton text={`from marktools import MarkTools
+              <CopyButton text={`from archaitools import MarkTools
 from anthropic import Anthropic
 
 mark = MarkTools(api_key="mk_...")
@@ -499,7 +499,7 @@ while True:
     messages.append({"role": "user", "content": tool_results})`} />
             </div>
             <pre className={styles.codeBlock}>
-{`from marktools import MarkTools
+{`from archaitools import MarkTools
 from anthropic import Anthropic
 
 mark = MarkTools(api_key="mk_...")

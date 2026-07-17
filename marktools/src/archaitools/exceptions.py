@@ -1,5 +1,5 @@
 """
-Custom exceptions for the marktools SDK.
+Custom exceptions for the archaitools SDK.
 
 All exceptions inherit from MarkError so callers can catch
 all SDK errors with a single except clause.
@@ -7,7 +7,7 @@ all SDK errors with a single except clause.
 
 
 class MarkError(Exception):
-    """Base exception for all marktools errors."""
+    """Base exception for all archaitools errors."""
 
     def __init__(self, message: str, status_code: int | None = None, response: dict | None = None):
         super().__init__(message)

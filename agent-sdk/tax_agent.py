@@ -3,7 +3,7 @@ tax_agent.py — Autonomous Tax Filing Agent
 
 Demonstrates:
   ✅ Claude Agent SDK (Anthropic tool_use loop)
-  ✅ marktools integration (pip install marktools)
+  ✅ archaitools integration (pip install archaitools)
   ✅ Privacy-first PII sanitization
   ✅ Human Flourishing — makes taxes accessible
 
@@ -34,7 +34,7 @@ Process:
 6. Use mark_rate to give feedback
 
 Key principles:
-- NEVER send PII to the marketplace (marktools sanitizes automatically)
+- NEVER send PII to the marketplace (archaitools sanitizes automatically)
 - Explain savings: marketplace workflow vs. solving from scratch
 - Be specific about which tax forms are needed
 - Highlight edge cases and gotchas from the workflow
@@ -50,7 +50,7 @@ def run_tax_agent():
         verbose=True,
     )
 
-    # Realistic user query with PII (will be auto-sanitized by marktools)
+    # Realistic user query with PII (will be auto-sanitized by archaitools)
     task = (
         "I need to file my Ohio state taxes for 2024. "
         "I have a W2 from my employer, and I want to use itemized deductions. "

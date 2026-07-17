@@ -1,8 +1,8 @@
 """
-with_marktools.py — Simulates what an agent does WITH marktools.
+with_archaitools.py — Simulates what an agent does WITH archaitools.
 
 This is the "enhanced" agent: Claude with access to the Mark AI marketplace
-via `pip install marktools`. It uses mark_estimate → mark_buy → mark_rate
+via `pip install archaitools`. It uses mark_estimate → mark_buy → mark_rate
 to get pre-solved expert workflows with edge cases and domain knowledge.
 
 This file is used by the demo to show the AFTER state.
@@ -77,12 +77,12 @@ class EnhancedTrace:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Simulated marktools-enhanced agent solving Ohio taxes
+# Simulated archaitools-enhanced agent solving Ohio taxes
 # ──────────────────────────────────────────────────────────────────────────────
 
-def run_marktools_agent(task: str, baseline_tokens: int = 4390) -> EnhancedTrace:
+def run_archaitools_agent(task: str, baseline_tokens: int = 4390) -> EnhancedTrace:
     """
-    Simulate a Claude agent with marktools solving Ohio tax filing.
+    Simulate a Claude agent with archaitools solving Ohio tax filing.
 
     The agent calls mark_estimate (free), evaluates the results,
     calls mark_buy to purchase the best workflow, then delivers

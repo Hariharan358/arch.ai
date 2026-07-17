@@ -287,7 +287,7 @@ export default function WorkflowVisualizer() {
   const typeLabel = (type: NodeType) => {
     switch (type) {
       case 'agent': return 'agent'
-      case 'api': return 'mark api'
+      case 'api': return 'arch.ai api'
       case 'backend': return 'internal'
       case 'event': return 'event'
     }
@@ -345,7 +345,7 @@ export default function WorkflowVisualizer() {
                     setExpanded(!expanded)
                   }}
                 >
-                  {expanded ? '▾ Hide' : '▸ Expand'} Mark Backend
+                  {expanded ? '▾ Hide' : '▸ Expand'} arch.ai Backend
                 </button>
               )}
               <div className={styles.clickHint}>click to inspect payload</div>
@@ -364,7 +364,7 @@ export default function WorkflowVisualizer() {
                   >
                     <div className={styles.subFlowInner}>
                       <div className={styles.backendLabel}>
-                        <span className={styles.backendPipe}>│</span> Mark Backend Pipeline
+                        <span className={styles.backendPipe}>│</span> arch.ai Backend Pipeline
                       </div>
                       {backendSubNodes.map((sub, si) => (
                         <div key={sub.id}>

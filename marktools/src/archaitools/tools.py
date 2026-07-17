@@ -9,7 +9,7 @@ Provides ready-to-use tool definitions that can be passed to any LLM framework:
 
 Usage with Anthropic::
 
-    from marktools import MarkTools
+    from archaitools import MarkTools
     from anthropic import Anthropic
 
     mark = MarkTools(api_key="mk_...")
@@ -23,7 +23,7 @@ Usage with Anthropic::
 
 Usage with OpenAI::
 
-    from marktools import MarkTools
+    from archaitools import MarkTools
     from openai import OpenAI
 
     mark = MarkTools(api_key="mk_...")
@@ -41,8 +41,8 @@ from __future__ import annotations
 import json
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from marktools.client import MarkClient
-from marktools.models import EstimateResult, PurchaseReceipt, RateResult
+from archaitools.client import MarkClient
+from archaitools.models import EstimateResult, PurchaseReceipt, RateResult
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -198,7 +198,7 @@ class MarkTools:
 
     Example::
 
-        from marktools import MarkTools
+        from archaitools import MarkTools
         from anthropic import Anthropic
 
         tools = MarkTools(api_key="mk_...")

@@ -1,19 +1,19 @@
 """
-Tests for marktools SDK.
+Tests for archaitools SDK.
 """
 
 import json
 import pytest
 import responses
-from marktools import MarkClient, MarkTools
-from marktools.exceptions import (
+from archaitools import MarkClient, MarkTools
+from archaitools.exceptions import (
     AuthenticationError,
     InsufficientCreditsError,
     MarkError,
     ServerError,
     WorkflowNotFoundError,
 )
-from marktools.models import (
+from archaitools.models import (
     EstimateResult,
     HealthStatus,
     PurchaseReceipt,
@@ -101,7 +101,7 @@ class TestModels:
         assert est.cheapest_solution is None
 
     def test_solution_pricing(self):
-        from marktools.models import SolutionPricing
+        from archaitools.models import SolutionPricing
 
         pricing = SolutionPricing(
             total_cost_tokens=500,
@@ -112,7 +112,7 @@ class TestModels:
         assert pricing.savings_percentage == 75
 
     def test_token_comparison(self):
-        from marktools.models import TokenComparison
+        from archaitools.models import TokenComparison
 
         tc = TokenComparison(with_workflow=800, from_scratch=3500)
         assert tc.savings == 2700

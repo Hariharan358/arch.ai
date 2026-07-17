@@ -16,7 +16,7 @@ const sora = Sora({
 })
 
 export const metadata: Metadata = {
-  title: 'Mark — The Agent Marketplace',
+  title: 'arch.ai — The Agent Marketplace',
   description: 'The marketplace your agents already know how to use.',
 }
 
