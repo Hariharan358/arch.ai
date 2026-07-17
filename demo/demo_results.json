@@ -1,14 +1,14 @@
 {
-  "task": "Help me file my Ohio 2024 taxes. I have a W2 and want to use itemized deductions. Income around $85,000.",
-  "timestamp": "2026-02-14T21:19:05Z",
-  "without_marktools": {
-    "task": "Help me file my Ohio 2024 taxes. I have a W2 and want to use itemized deductions. Income around $85,000.",
+  "task": "Help me file my Tamil Nadu (Chennai) FY 2024-25 income tax. I have Form 16, want to use Old Tax Regime deductions (like 80C, 80D, HRA). Salary around \u20b98,50,000.",
+  "timestamp": "2026-07-17T22:35:29Z",
+  "without_archaitools": {
+    "task": "Help me file my Tamil Nadu (Chennai) FY 2024-25 income tax. I have Form 16, want to use Old Tax Regime deductions (like 80C, 80D, HRA). Salary around \u20b98,50,000.",
     "steps": [
       {
         "step": 1,
         "action": "parse_request",
-        "reasoning": "I need to help the user file Ohio 2024 taxes. They have W2 income around $85,000 and want itemized deductions. Let me think through the Ohio tax filing process step by step.",
-        "output": "Parsed: state=Ohio, year=2024, income\u2248$85k, W2, itemized deductions",
+        "reasoning": "I need to help the user file Tamil Nadu tax returns for FY 2024-25. They have Form 16 income around \u20b98,50,000, reside in Chennai, and want to maximize deductions under the Old Tax Regime. Let me think through the Indian tax filing process step by step.",
+        "output": "Parsed: state=Tamil Nadu, city=Chennai, year=FY 2024-25, income\u2248\u20b98.5L, Form 16, Old Tax Regime deductions",
         "tokens_used": 320,
         "latency_ms": 800,
         "correct": true,
@@ -17,18 +17,18 @@
       {
         "step": 2,
         "action": "research_forms",
-        "reasoning": "Ohio uses the IT-1040 form for state income tax. I'll need to determine which schedules are required. For itemized deductions, there should be a Schedule A equivalent.",
-        "output": "Forms identified: IT-1040 (main), Schedule A (itemized deductions). Will need to calculate Ohio AGI separately from federal AGI.",
+        "reasoning": "Income tax in India is filed via ITR forms. For salary income with house property and other sources, ITR-1 (Sahaj) is appropriate. I'll need to look up Tamil Nadu state-specific tax forms or local levies.",
+        "output": "Forms identified: ITR-1 (main tax return). Will calculate taxable income using standard deductions.",
         "tokens_used": 580,
         "latency_ms": 1200,
         "correct": true,
-        "missed_edge_case": "Did NOT identify SD-100 (school district tax) \u2014 required for most Ohio filers"
+        "missed_edge_case": "Did NOT identify Tamil Nadu Professional Tax (GCC slabs) \u2014 required for salaried employees in Chennai"
       },
       {
         "step": 3,
-        "action": "calculate_ohio_agi",
-        "reasoning": "Ohio AGI is based on federal AGI with some state-specific adjustments. I'll assume the federal AGI is approximately equal to the W2 income of $85,000. Standard adjustments include retirement income credits and 529 contributions.",
-        "output": "Ohio AGI estimated at $85,000 (assuming no major state adjustments)",
+        "action": "calculate_gross_income",
+        "reasoning": "Gross total income starts with the salary income from Form 16 of \u20b98,50,000. I will assume standard deductions of \u20b950,000 apply to arrive at gross taxable salary.",
+        "output": "Gross Income estimated at \u20b98,50,000 (standard salary deduction of \u20b950,000 to be applied later)",
         "tokens_used": 640,
         "latency_ms": 1100,
         "correct": true,
@@ -36,90 +36,91 @@
       },
       {
         "step": 4,
-        "action": "calculate_itemized_deductions",
-        "reasoning": "For itemized deductions, I need to consider mortgage interest, property taxes, charitable contributions, and medical expenses. Note: The federal SALT cap of $10,000 applies to property tax deductions.",
-        "output": "Itemized deductions calculated with $10,000 SALT cap applied to property taxes. Total estimated itemized: $14,200 (mortgage $8,500 + property tax capped at $10,000... wait, the cap is for ALL state/local taxes combined, so property tax + state income tax \u2264 $10,000)",
+        "action": "calculate_old_regime_deductions",
+        "reasoning": "Under the Old Tax Regime, we deduct investments like Section 80C (up to \u20b91,50,000) and home loan interest under Section 24(b). Note: The Section 24(b) deduction for self-occupied property interest is capped at \u20b91,00,000.",
+        "output": "Deductions calculated with \u20b91,00,000 cap applied to home loan interest under Sec 24(b). Total estimated deductions: \u20b92,75,000 (80C \u20b91,50,000 + 80D \u20b925,000 + Sec 24(b) capped at \u20b91,00,000).",
         "tokens_used": 890,
         "latency_ms": 1500,
         "correct": false,
-        "missed_edge_case": "WRONG: Ohio does NOT have the $10,000 SALT cap. The federal cap exists but Ohio allows FULL property tax deduction on the state return. This error could cost the taxpayer $2,000+ in missed deductions."
+        "missed_edge_case": "WRONG: Section 24(b) home loan interest deduction limit is actually \u20b92,00,000 for self-occupied properties. The baseline agent applied an incorrect cap of \u20b91,00,000, costing the taxpayer \u20b91,00,000 in deductions."
       },
       {
         "step": 5,
-        "action": "calculate_tax",
-        "reasoning": "Ohio has graduated tax brackets. For 2024, the rates range from about 0.5% to 4%. Let me apply the brackets to the taxable income.",
-        "output": "Applied Ohio tax brackets: ~$2,350 estimated Ohio income tax. Used rates: 0%-$25,000 at 0.5%, $25,001-$100,000 at 2.5%, over $100,000 at 3.5%",
+        "action": "calculate_tax_slabs",
+        "reasoning": "Let's apply the graduated tax slabs. For FY 2024-25, under the Old Tax Regime, the slabs start tax-free up to \u20b92.5 Lakhs, then 5% up to \u20b95 Lakhs, and 20% beyond that.",
+        "output": "Applied tax slabs: \u20b937,000 estimated tax liability under Old Regime. Used old tax slabs: 0% up to \u20b92.5L, 5% from \u20b92.5L to \u20b95L, 20% from \u20b95L to \u20b910L.",
         "tokens_used": 720,
         "latency_ms": 1300,
         "correct": false,
-        "missed_edge_case": "Used OUTDATED brackets. 2024 Ohio brackets are: $0-$26,050 at 0%, $26,051-$100,000 at 2.765%, $100,001-$115,300 at 3.226%, $115,301+ at 3.688%. The 0% bracket especially matters \u2014 first $26k is tax-free."
+        "missed_edge_case": "Used outdated brackets. For FY 2024-25, under New Tax Regime, the slabs are much lower (\u20b90-3L 0%, \u20b93-6L 5%, \u20b96-9L 10%). The agent failed to compare and recommend the New Regime which has a standard deduction of \u20b975,000."
       },
       {
         "step": 6,
-        "action": "apply_credits",
-        "reasoning": "I should check for applicable Ohio tax credits. The main ones are the earned income credit and retirement income credit.",
-        "output": "Applied earned income credit. No other credits identified.",
+        "action": "apply_credits_rebates",
+        "reasoning": "I should check for applicable tax rebates. Section 87A rebate applies to taxable income.",
+        "output": "No rebates or credits applied. Net tax estimated at \u20b937,000.",
         "tokens_used": 410,
         "latency_ms": 900,
         "correct": false,
-        "missed_edge_case": "Missed Joint Filing Credit ($650 for married filing jointly \u2014 AUTOMATIC). Also missed checking for local tax credits."
+        "missed_edge_case": "Missed Section 87A rebate comparison (for taxable income up to \u20b97,00,000 in New Tax Regime, rebate is 100%). Also missed taking deduction of Tamil Nadu Professional Tax paid under Section 16(iii) (\u20b92,500)."
       },
       {
         "step": 7,
         "action": "local_taxes",
-        "reasoning": "Ohio may have local income taxes. I should mention that the user may need to check their local municipality for additional tax requirements.",
-        "output": "Note: Some Ohio municipalities levy local income taxes. The user should check their local tax rate. This is outside the scope of state filing.",
+        "reasoning": "Tamil Nadu levies a Professional Tax. I should advise the user to contact their employer or checking local corporation tables for professional tax details.",
+        "output": "Note: Greater Chennai Corporation levies professional tax. The user should check with their payroll department if it is deducted. This is considered a municipal filing rather than a federal tax filing requirement.",
         "tokens_used": 350,
         "latency_ms": 700,
         "correct": false,
-        "missed_edge_case": "Ohio local taxes are NOT optional \u2014 nearly all Ohio cities/school districts levy income tax. Columbus is 2.5%. This is a REQUIRED filing, not a 'maybe check'. Should have identified RITA/CCA filing requirement and work-city vs residence-city rules."
+        "missed_edge_case": "Tamil Nadu Professional Tax is mandatory \u2014 salaried employees earning above \u20b975,000 per half-year owe \u20b91,250 half-yearly (\u20b92,500 per year). If the employer does not deduct it, it must be paid separately online to Greater Chennai Corporation, and claimed as deduction under Section 16(iii)."
       },
       {
         "step": 8,
         "action": "final_recommendation",
         "reasoning": "Let me summarize the filing recommendation for the user.",
-        "output": "Summary: File IT-1040 with itemized deductions. Estimated Ohio tax: ~$2,350. Use Ohio eFile to submit electronically. Consider checking local tax requirements.",
+        "output": "Summary: File ITR-1 under Old Regime. Estimated tax: \u20b937,000 + 4% Cess = \u20b938,480. Submit via Income Tax e-filing portal. Check local Professional Tax if applicable.",
         "tokens_used": 480,
         "latency_ms": 1000,
         "correct": false,
-        "missed_edge_case": "Final tax estimate is wrong due to compounding errors above"
+        "missed_edge_case": "Final tax estimate and regime choice are sub-optimal due to compounding errors above"
       }
     ],
     "total_tokens": 4390,
     "total_latency_ms": 8500,
     "accuracy_score": 37.5,
     "errors": [
-      "\ud83d\udea8 Applied federal $10k SALT cap to Ohio state return \u2014 Ohio has NO SALT cap. Full property tax is deductible on IT-1040. Potential cost: $2,000+ in overpaid tax.",
-      "\ud83d\udea8 Used outdated tax brackets \u2014 Ohio restructured brackets for 2024. First $26,050 is now TAX-FREE (0% rate). Calculated tax is wrong.",
-      "\ud83d\udea8 Missed $650 Joint Filing Credit \u2014 automatic for all MFJ Ohio filers",
-      "\ud83d\udea8 Treated local taxes as optional \u2014 Ohio local income tax is mandatory for most residents (Columbus: 2.5%). Should file city return via RITA/CCA."
+      "\ud83d\udea8 Applied incorrect \u20b9100k cap to Section 24(b) home loan interest \u2014 actual limit is \u20b9200k. Taxpayer loses \u20b91,00,000 in deductions. Potential cost: \u20b920,000+ in overpaid tax.",
+      "\ud83d\udea8 Used outdated tax brackets and failed to compare with New Tax Regime (slabs restructured for FY 2024-25). Standard deduction in New Regime is \u20b975,000. Calculated tax is sub-optimal.",
+      "\ud83d\udea8 Missed Section 87A rebate eligibility check and Chennai Professional Tax deduction under Section 16(iii)",
+      "\ud83d\udea8 Treated Professional Tax as optional check \u2014 it is a mandatory half-yearly levy (Chennai GCC: \u20b91,250 per half-year). Must ensure employer deducted it or file online."
     ],
     "missed_edge_cases": [
-      "\u274c Missed SD-100 school district tax form \u2014 required for ~85% of Ohio residents",
-      "\u274c Applied SALT cap incorrectly \u2014 Ohio allows full property tax deduction",
-      "\u274c Missed Joint Filing Credit ($650) \u2014 automatic for married filing jointly",
-      "\u274c Dismissed local taxes as 'optional' \u2014 they are mandatory for most Ohio cities"
+      "\u274c Missed Tamil Nadu Professional Tax deduction \u2014 mandatory for Chennai salaried residents",
+      "\u274c Applied incorrect home loan interest limit \u2014 missed \u20b91,00,000 in eligible deductions",
+      "\u274c Missed Tamil Nadu Professional Tax deduction (\u20b92,500) under Section 16(iii) for Old Regime",
+      "\u274c Dismissed Professional Tax as 'optional corporate check' \u2014 it is a mandatory municipal tax"
     ],
     "label": "Raw Claude (no marketplace)"
   },
-  "with_marktools": {
-    "task": "Help me file my Ohio 2024 taxes. I have a W2 and want to use itemized deductions. Income around $85,000.",
+  "with_archaitools": {
+    "task": "Help me file my Tamil Nadu (Chennai) FY 2024-25 income tax. I have Form 16, want to use Old Tax Regime deductions (like 80C, 80D, HRA). Salary around \u20b98,50,000.",
     "steps": [
       {
         "step": 1,
         "action": "mark_estimate",
-        "reasoning": "The user needs to file Ohio 2024 taxes. Instead of reasoning from scratch, let me search the Mark AI marketplace for a pre-solved workflow. I'll call mark_estimate \u2014 it's free, and it will automatically sanitize any PII from the query before searching.",
+        "reasoning": "The user needs to file Tamil Nadu (Chennai) tax returns for FY 2024-25. Instead of reasoning from scratch, let me search the Mark AI marketplace for a pre-solved tax filing workflow. I'll call mark_estimate \u2014 it's free and automatically handles any potential PII.",
         "tool_calls": [
           {
             "tool": "mark_estimate",
             "input": {
-              "query": "File Ohio 2024 state taxes with W2 income and itemized deductions",
+              "query": "File Tamil Nadu FY 2024-25 taxes with Form 16, Old Regime, and Chennai Professional Tax",
               "context": {
-                "state": "ohio",
-                "year": 2024,
-                "income_bracket": "80k-100k",
-                "filing_type": "W2",
-                "deduction_type": "itemized"
+                "state": "tamilnadu",
+                "city": "chennai",
+                "year": "2024-25",
+                "income_bracket": "8L-10L",
+                "filing_type": "Form 16",
+                "deduction_type": "old_regime"
               }
             },
             "result": {
@@ -127,8 +128,8 @@
               "num_solutions": 3,
               "best_match": {
                 "solution_id": "sol_1",
-                "title": "Ohio IT-1040 (W2, Itemized) \u2014 Complete Filing Workflow",
-                "confidence": 0.94,
+                "title": "Tamil Nadu Income Tax & Chennai Professional Tax \u2014 Salaried (Form 16) Complete Workflow",
+                "confidence": 0.96,
                 "pricing": {
                   "total_cost_tokens": 500,
                   "estimated_savings_percentage": 73,
@@ -139,45 +140,46 @@
                   }
                 },
                 "coverage": [
-                  "IT-1040",
-                  "Schedule A",
-                  "SD-100",
-                  "city tax",
-                  "RITA"
+                  "ITR-1",
+                  "Section 80C",
+                  "Section 80D",
+                  "Section 24(b)",
+                  "Chennai PT",
+                  "Section 16(iii)"
                 ],
-                "rating": 4.8,
+                "rating": 4.9,
                 "usage_count": 47
               },
               "alternatives": [
                 {
                   "solution_id": "sol_2",
-                  "title": "Generic State Tax Filing",
-                  "confidence": 0.71
+                  "title": "Generic India Income Tax Filing (ITR-1)",
+                  "confidence": 0.73
                 },
                 {
                   "solution_id": "sol_3",
-                  "title": "Ohio Simple (Standard Deduction)",
-                  "confidence": 0.58
+                  "title": "Tamil Nadu Professional Tax Return only",
+                  "confidence": 0.55
                 }
               ],
               "privacy": {
                 "pii_detected": [
                   "income_bracket"
                 ],
-                "action": "bucketed to 80k-100k (exact income never sent to marketplace)"
+                "action": "bucketed to 8L-10L (exact income never sent to marketplace)"
               }
             },
             "latency_ms": 1200
           }
         ],
-        "output": "Found 3 matching workflows. Best match: 'Ohio IT-1040 (W2, Itemized)' \u2014 94% confidence, 500 tokens, covers IT-1040 + Schedule A + SD-100 + city tax + RITA. This saves ~73% vs solving from scratch. Rating: 4.8\u2605 from 47 users.",
+        "output": "Found 3 matching workflows. Best match: 'Tamil Nadu Income Tax & Chennai Professional Tax \u2014 Salaried' \u2014 96% confidence, 500 tokens, covers ITR-1 + 80C + 80D + 24(b) + Chennai PT + Sec 16(iii) deduction. This saves ~73% vs solving from scratch. Rating: 4.9\u2605 from 47 users.",
         "tokens_used": 180,
         "latency_ms": 1400
       },
       {
         "step": 2,
         "action": "mark_buy",
-        "reasoning": "The marketplace found a 94% confidence match that covers ALL Ohio filing requirements including SD-100 and city tax \u2014 things I might miss solving from scratch. At 500 tokens with 73% savings, this is an excellent deal. It has a 4.8\u2605 rating from 47 users. Purchasing now.",
+        "reasoning": "The marketplace found a 96% confidence match that covers Chennai Professional Tax, Section 24(b) interest rules, and Section 16(iii) deductions \u2014 things I might miss solving from scratch. At 500 tokens with 73% savings, this is an excellent deal. It has a 4.9\u2605 rating from 47 users. Purchasing now.",
         "tool_calls": [
           {
             "tool": "mark_buy",
@@ -189,72 +191,75 @@
               "purchase_id": "purch_demo_001",
               "tokens_charged": 500,
               "execution_plan": {
-                "title": "Ohio IT-1040 (W2, Itemized) \u2014 Complete Filing Workflow",
+                "title": "Tamil Nadu Income Tax & Chennai Professional Tax \u2014 Salaried (Form 16) Complete Workflow",
                 "total_steps": 10,
                 "workflows": [
                   {
-                    "workflow_id": "ohio_w2_itemized_2024",
-                    "title": "Ohio 2024 IT-1040 Filing",
+                    "workflow_id": "tn_salaried_tax_2024",
+                    "title": "Tamil Nadu FY 2024-25 Tax Filing",
                     "steps": [
                       {
                         "step": 1,
-                        "action": "Gather W2 forms from all employers"
+                        "action": "Gather Form 16, Form 26AS, and AIS/TIS statement"
                       },
                       {
                         "step": 2,
-                        "action": "Calculate Ohio AGI (federal AGI \u2212 state pension \u2212 529 contributions)"
+                        "action": "Identify Tamil Nadu Professional Tax deductions under Section 16(iii) (max \u20b92,500/year)"
                       },
                       {
                         "step": 3,
-                        "action": "Complete Schedule A \u2014 itemized deductions (FULL property tax \u2014 no SALT cap on Ohio return)"
+                        "action": "Complete Section 80C (PPF, EPF, ELSS, Insurance) deductions up to \u20b91,50,000"
                       },
                       {
                         "step": 4,
-                        "action": "Compare: itemized ($X) vs standard deduction ($9,050 for MFJ 2024)"
+                        "action": "Complete Section 24(b) (Home loan interest) deductions up to \u20b92,00,000"
                       },
                       {
                         "step": 5,
-                        "action": "Apply 2024 Ohio graduated brackets: $0-$26,050 at 0%, $26,051-$100k at 2.765%"
+                        "action": "Complete Section 80D (Medical insurance) deductions up to \u20b925,000"
                       },
                       {
                         "step": 6,
-                        "action": "Apply Joint Filing Credit ($650 automatic for MFJ)"
+                        "action": "Compare: Old Tax Regime tax vs New Tax Regime tax (standard deduction \u20b975,000 in New)"
                       },
                       {
                         "step": 7,
-                        "action": "Complete SD-100 for school district income tax"
+                        "action": "Apply New Tax Regime slabs: \u20b90-3L 0%, \u20b93-6L 5%, \u20b96-9L 10% (rebate under 87A if taxable income \u2264 \u20b97L)"
                       },
                       {
                         "step": 8,
-                        "action": "File city return via RITA/CCA (Columbus: 2.5% rate)"
+                        "action": "Reconcile TDS from W2/Form 16 and verify Chennai Professional Tax paid (\u20b91,250 half-yearly)"
                       },
                       {
                         "step": 9,
-                        "action": "Apply W2 box 17 withholding credits"
+                        "action": "Calculate final net tax liability (including 4% Health and Education Cess)"
                       },
                       {
                         "step": 10,
-                        "action": "File electronically via Ohio eFile"
+                        "action": "File ITR-1 electronically on the Income Tax India e-filing portal"
                       }
                     ],
                     "edge_cases": [
-                      "Ohio does NOT have a $10,000 SALT cap \u2014 full property tax deduction allowed",
-                      "Columbus residents must also file city RITA return separately",
-                      "SD-100 required if school district has income tax (most do)",
-                      "Joint Filing Credit is AUTOMATIC for MFJ \u2014 $650 credit, many filers miss this",
-                      "If worked in different city than residence, may owe tax to both \u2014 check credit",
-                      "First $26,050 of income is TAX-FREE under 2024 Ohio brackets (0% rate)"
+                      "Tamil Nadu Professional Tax is mandatory (Chennai GCC: \u20b91,250/half-year) and fully deductible under Sec 16(iii) in Old Regime",
+                      "Section 24(b) deduction for self-occupied home loan interest limit is \u20b92,00,000 (not \u20b91,00,000)",
+                      "Section 87A rebate gives 100% tax waiver if taxable income under New Regime is \u2264 \u20b97,00,000",
+                      "New Tax Regime Standard Deduction is \u20b975,000 for FY 2024-25, and tax slabs are restructured",
+                      "ITR-1 is suitable only if salary, one house property, and other sources are the only income streams",
+                      "Health & Education Cess is flat 4% of the calculated income tax"
                     ],
                     "domain_knowledge": {
-                      "ohio_2024_brackets": {
-                        "0-26050": "0%",
-                        "26051-100000": "2.765%",
-                        "100001-115300": "3.226%",
-                        "115301+": "3.688%"
+                      "new_regime_slabs_fy_2024_25": {
+                        "0-300000": "0%",
+                        "300001-600000": "5%",
+                        "600001-900000": "10%",
+                        "900001-1200000": "15%",
+                        "1200001-1500000": "20%",
+                        "1500001+": "30%"
                       },
-                      "standard_deduction_mfj_2024": 9050,
-                      "joint_filing_credit": 650,
-                      "columbus_city_rate": "2.5%"
+                      "standard_deduction_new_regime": 75000,
+                      "standard_deduction_old_regime": 50000,
+                      "sec_24b_home_interest_limit": 200000,
+                      "chennai_professional_tax_yearly": 2500
                     }
                   }
                 ]
@@ -263,40 +268,40 @@
             "latency_ms": 800
           }
         ],
-        "output": "Purchased workflow for 500 tokens. Received complete 10-step execution plan with 6 edge cases and domain knowledge including correct 2024 brackets.",
+        "output": "Purchased workflow for 500 tokens. Received complete 10-step execution plan with 6 edge cases and domain knowledge including correct FY 2024-25 brackets.",
         "tokens_used": 150,
         "latency_ms": 900
       },
       {
         "step": 3,
         "action": "present_plan",
-        "reasoning": "Now I have a complete, expert-verified execution plan. Let me present this to the user with all the important Ohio-specific details highlighted.",
+        "reasoning": "Now I have a complete, expert-verified execution plan. Let me present this to the user with all the important Tamil Nadu and India tax details highlighted.",
         "tool_calls": [],
-        "output": "Here's your complete Ohio 2024 tax filing plan:\n\n\ud83d\udccb FORMS REQUIRED:\n  \u2022 IT-1040 (main Ohio return)\n  \u2022 Schedule A (itemized deductions)\n  \u2022 SD-100 (school district tax)\n  \u2022 City return via RITA/CCA\n\n\ud83d\udca1 CRITICAL OHIO-SPECIFIC DETAILS:\n  1. NO SALT cap on Ohio return \u2014 deduct FULL property tax\n  2. First $26,050 of income is TAX-FREE (0% bracket)\n  3. $650 Joint Filing Credit is AUTOMATIC for married filing jointly\n  4. Columbus city tax is 2.5% \u2014 filed separately via RITA\n  5. SD-100 is REQUIRED if your school district levies income tax\n\n\ud83d\udcca ESTIMATED TAX CALCULATION:\n  Ohio AGI: ~$85,000\n  Taxable (after $26,050 exempt): ~$58,950\n  Ohio tax (2.765% on $58,950): ~$1,630\n  Joint Filing Credit: \u2212$650\n  Net Ohio tax: ~$980\n  + School district tax: varies\n  + Columbus city tax: ~$2,125\n\nThis plan has been used by 47 other filers with a 4.8\u2605 rating.",
+        "output": "Here's your complete Tamil Nadu (Chennai) tax filing plan:\n\n\ud83d\udccb FORMS REQUIRED:\n  \u2022 ITR-1 (Main Indian Income Tax return)\n  \u2022 Greater Chennai Corporation (GCC) Professional Tax receipt/statement\n\n\ud83d\udca1 CRITICAL REGIONAL & REGIME DETAILS:\n  1. Chennai Professional Tax (\u20b92,500/year) is fully deductible under Sec 16(iii) for Old Regime\n  2. Section 24(b) limit is \u20b92,00,000 for self-occupied home loan interest (baseline capped it at \u20b91,00,000)\n  3. New Regime standard deduction is \u20b975,000 for FY 2024-25 with restructured tax slabs\n  4. Section 87A rebate provides 100% tax waiver if taxable income in New Regime \u2264 \u20b97,00,000\n\n\ud83d\udcca REGIME COMPARISON & TAX CALCULATION (Gross Salary: \u20b98,50,000):\n  \u2022 OLD REGIME:\n    Gross Salary: \u20b98,50,000\n    Deductions: \u20b950,000 (Std Ded) + \u20b92,500 (PT) + \u20b91,50,000 (80C) + \u20b925,000 (80D) = \u20b92,27,500\n    Taxable Income: \u20b96,22,500\n    Calculated Tax: \u20b937,000 + 4% Cess = \u20b938,480\n  \u2022 NEW REGIME:\n    Gross Salary: \u20b98,50,000\n    Deductions: \u20b975,000 (Std Ded) = \u20b975,000\n    Taxable Income: \u20b97,75,000\n    Calculated Tax: \u20b932,500 (\u20b93-6L: 5%, \u20b96-7.75L: 10%) + 4% Cess = \u20b933,800\n\n\u27a1\ufe0f RECOMMENDATION: File under the NEW REGIME to save \u20b94,680. Net tax liability is \u20b933,800.\nThis plan has been used by 47 other filers with a 4.9\u2605 rating.",
         "tokens_used": 420,
         "latency_ms": 1100
       },
       {
         "step": 4,
         "action": "mark_rate",
-        "reasoning": "The workflow provided accurate, complete information. Let me rate it to help improve marketplace quality for future users.",
+        "reasoning": "The workflow provided accurate, complete information comparing Indian tax regimes and incorporating Chennai Professional Tax. Rating it now to help future agents.",
         "tool_calls": [
           {
             "tool": "mark_rate",
             "input": {
-              "workflow_id": "ohio_w2_itemized_2024",
+              "workflow_id": "tn_salaried_tax_2024",
               "rating": 5
             },
             "result": {
               "success": true,
-              "workflow_id": "ohio_w2_itemized_2024",
-              "new_average_rating": 4.82,
+              "workflow_id": "tn_salaried_tax_2024",
+              "new_average_rating": 4.92,
               "total_ratings": 48
             },
             "latency_ms": 200
           }
         ],
-        "output": "Rated workflow 5\u2605. New average: 4.82\u2605 (48 ratings).",
+        "output": "Rated workflow 5\u2605. New average: 4.92\u2605 (48 ratings).",
         "tokens_used": 80,
         "latency_ms": 400
       }
@@ -305,16 +310,16 @@
     "total_latency_ms": 3800,
     "accuracy_score": 100.0,
     "edge_cases_caught": [
-      "\u2705 Ohio has NO SALT cap \u2014 full property tax deduction (baseline missed this)",
-      "\u2705 SD-100 school district tax form required (baseline missed this)",
-      "\u2705 $650 Joint Filing Credit is automatic for MFJ (baseline missed this)",
-      "\u2705 Local city tax is MANDATORY, not optional (baseline dismissed this)",
-      "\u2705 Correct 2024 brackets with $26,050 at 0% (baseline used outdated brackets)",
-      "\u2705 RITA/CCA filing requirement for city return (baseline ignored this)"
+      "\u2705 Verified Chennai Professional Tax (\u20b92,500/yr) is deductible under Sec 16(iii) (baseline missed this)",
+      "\u2705 Applied correct Section 24(b) home loan interest cap of \u20b92,00,000 (baseline used incorrect \u20b91,00,000 cap)",
+      "\u2705 Calculated and recommended the New Tax Regime which saves the taxpayer \u20b94,680 (baseline ignored this)",
+      "\u2705 Used correct FY 2024-25 New Tax Regime brackets (baseline used outdated brackets)",
+      "\u2705 Checked Section 87A rebate eligibility (baseline ignored this)",
+      "\u2705 Outlined mandatory professional tax slabs for Greater Chennai Corporation (baseline treated as optional)"
     ],
     "tokens_saved_vs_baseline": 3060,
     "savings_percentage": 69.7,
-    "label": "Claude + marktools"
+    "label": "Claude + archaitools"
   },
   "comparison": {
     "accuracy_improvement": "+62pp",

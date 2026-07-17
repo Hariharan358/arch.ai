@@ -90,7 +90,7 @@ def print_header(fast: bool):
     print(f"{C.BOLD}{C.CYAN}  ╚══════════════════════════════════════════════════════════════╝{C.RESET}")
     print(f"{C.BOLD}{C.CYAN}{'═' * 70}{C.RESET}\n")
 
-    typewrite(f"  {C.DIM}Task: File Ohio 2024 state taxes (W2, itemized, ~$85k income){C.RESET}", fast)
+    typewrite(f"  {C.DIM}Task: File Tamil Nadu FY 2024-25 taxes (Form 16, Old Regime, ~$8.5L income, Chennai){C.RESET}", fast)
     typewrite(f"  {C.DIM}We'll run the SAME task with two agents and compare results.{C.RESET}\n", fast)
     pause(1.0, fast)
 
@@ -255,15 +255,15 @@ def print_scorecard(baseline: BaselineTrace, enhanced: EnhancedTrace, fast: bool
     # ── Dollar Impact ─────────────────────────────────────────────────────
     print(f"\n  {C.BOLD}REAL-WORLD IMPACT{C.RESET}")
     print(f"    {C.RED}Without archaitools:{C.RESET}")
-    print(f"      • Applied SALT cap incorrectly → taxpayer overpays ~$2,000")
-    print(f"      • Missed $650 Joint Filing Credit → another $650 lost")
-    print(f"      • Used wrong brackets → incorrect total")
-    print(f"      • Skipped school district + city tax → potential IRS penalty")
+    print(f"      • Applied incorrect Section 24(b) cap → taxpayer loses ₹1,00,000 in deductions")
+    print(f"      • Failed to compare tax regimes → chose sub-optimal Old Regime (lost ₹4,680)")
+    print(f"      • Used outdated tax brackets → incorrect tax calculation")
+    print(f"      • Skipped Chennai Professional Tax deduction → potential compliance penalty")
     print(f"    {C.GREEN}With archaitools:{C.RESET}")
     print(f"      • Every edge case caught from expert-verified workflow")
-    print(f"      • Correct tax estimate: ~$980 state + ~$2,125 city")
-    print(f"      • All required forms identified (IT-1040, Schedule A, SD-100, RITA)")
-    print(f"      • 4.8★ rating from 47 real users confirms accuracy")
+    print(f"      • Correct tax estimate: ₹33,800 under New Regime (saves ₹4,680 vs Old Regime)")
+    print(f"      • All required forms identified (ITR-1, Chennai Professional Tax statement)")
+    print(f"      • 4.9★ rating from 47 real users confirms accuracy")
     pause(0.5, fast)
 
     # ── Summary Box ───────────────────────────────────────────────────────
@@ -319,7 +319,7 @@ def main():
     args = parser.parse_args()
 
     fast = args.fast
-    task = "Help me file my Ohio 2024 taxes. I have a W2 and want to use itemized deductions. Income around $85,000."
+    task = "Help me file my Tamil Nadu (Chennai) FY 2024-25 income tax. I have Form 16, want to use Old Tax Regime deductions (like 80C, 80D, HRA). Salary around ₹8,50,000."
 
     # ── Run both agents ───────────────────────────────────────────────────
     print_header(fast)

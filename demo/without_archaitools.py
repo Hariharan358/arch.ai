@@ -66,7 +66,7 @@ class BaselineTrace:
 
 def run_baseline_agent(task: str) -> BaselineTrace:
     """
-    Simulate a raw Claude agent attempting Ohio tax filing WITHOUT marktools.
+    Simulate a raw Claude agent attempting Tamil Nadu tax filing WITHOUT marktools.
 
     This models what actually happens when an LLM tries to do domain-specific
     tasks from scratch: it gets the broad strokes right but misses critical
@@ -80,162 +80,159 @@ def run_baseline_agent(task: str) -> BaselineTrace:
         step_number=1,
         action="parse_request",
         reasoning=(
-            "I need to help the user file Ohio 2024 taxes. They have W2 income "
-            "around $85,000 and want itemized deductions. Let me think through "
-            "the Ohio tax filing process step by step."
+            "I need to help the user file Tamil Nadu tax returns for FY 2024-25. "
+            "They have Form 16 income around ₹8,50,000, reside in Chennai, and want "
+            "to maximize deductions under the Old Tax Regime. Let me think through "
+            "the Indian tax filing process step by step."
         ),
-        output="Parsed: state=Ohio, year=2024, income≈$85k, W2, itemized deductions",
+        output="Parsed: state=Tamil Nadu, city=Chennai, year=FY 2024-25, income≈₹8.5L, Form 16, Old Tax Regime deductions",
         tokens_used=320,
         latency_ms=800,
         correct=True,
     ))
 
-    # ── Step 2: Research Ohio tax forms ───────────────────────────────────
+    # ── Step 2: Research Tamil Nadu tax forms ─────────────────────────────
     trace.steps.append(BaselineStep(
         step_number=2,
         action="research_forms",
         reasoning=(
-            "Ohio uses the IT-1040 form for state income tax. I'll need to "
-            "determine which schedules are required. For itemized deductions, "
-            "there should be a Schedule A equivalent."
+            "Income tax in India is filed via ITR forms. For salary income with "
+            "house property and other sources, ITR-1 (Sahaj) is appropriate. "
+            "I'll need to look up Tamil Nadu state-specific tax forms or local levies."
         ),
         output=(
-            "Forms identified: IT-1040 (main), Schedule A (itemized deductions). "
-            "Will need to calculate Ohio AGI separately from federal AGI."
+            "Forms identified: ITR-1 (main tax return). "
+            "Will calculate taxable income using standard deductions."
         ),
         tokens_used=580,
         latency_ms=1200,
         correct=True,
-        missed_edge_case="Did NOT identify SD-100 (school district tax) — required for most Ohio filers",
+        missed_edge_case="Did NOT identify Tamil Nadu Professional Tax (GCC slabs) — required for salaried employees in Chennai",
     ))
     trace.missed_edge_cases.append(
-        "❌ Missed SD-100 school district tax form — required for ~85% of Ohio residents"
+        "❌ Missed Tamil Nadu Professional Tax deduction — mandatory for Chennai salaried residents"
     )
 
-    # ── Step 3: Calculate Ohio AGI ────────────────────────────────────────
+    # ── Step 3: Calculate Gross Income ────────────────────────────────────
     trace.steps.append(BaselineStep(
         step_number=3,
-        action="calculate_ohio_agi",
+        action="calculate_gross_income",
         reasoning=(
-            "Ohio AGI is based on federal AGI with some state-specific adjustments. "
-            "I'll assume the federal AGI is approximately equal to the W2 income of $85,000. "
-            "Standard adjustments include retirement income credits and 529 contributions."
+            "Gross total income starts with the salary income from Form 16 of ₹8,50,000. "
+            "I will assume standard deductions of ₹50,000 apply to arrive at gross taxable salary."
         ),
-        output="Ohio AGI estimated at $85,000 (assuming no major state adjustments)",
+        output="Gross Income estimated at ₹8,50,000 (standard salary deduction of ₹50,000 to be applied later)",
         tokens_used=640,
         latency_ms=1100,
         correct=True,
     ))
 
-    # ── Step 4: Itemized deductions (WITH ERROR) ──────────────────────────
+    # ── Step 4: Old Regime deductions (WITH ERROR) ────────────────────────
     trace.steps.append(BaselineStep(
         step_number=4,
-        action="calculate_itemized_deductions",
+        action="calculate_old_regime_deductions",
         reasoning=(
-            "For itemized deductions, I need to consider mortgage interest, "
-            "property taxes, charitable contributions, and medical expenses. "
-            "Note: The federal SALT cap of $10,000 applies to property tax deductions."
+            "Under the Old Tax Regime, we deduct investments like Section 80C (up to ₹1,50,000) "
+            "and home loan interest under Section 24(b). "
+            "Note: The Section 24(b) deduction for self-occupied property interest is capped at ₹1,00,000."
         ),
         output=(
-            "Itemized deductions calculated with $10,000 SALT cap applied to property taxes. "
-            "Total estimated itemized: $14,200 (mortgage $8,500 + property tax capped at $10,000... "
-            "wait, the cap is for ALL state/local taxes combined, so property tax + state income tax ≤ $10,000)"
+            "Deductions calculated with ₹1,00,000 cap applied to home loan interest under Sec 24(b). "
+            "Total estimated deductions: ₹2,75,000 (80C ₹1,50,000 + 80D ₹25,000 + Sec 24(b) capped at ₹1,00,000)."
         ),
         tokens_used=890,
         latency_ms=1500,
         correct=False,
         missed_edge_case=(
-            "WRONG: Ohio does NOT have the $10,000 SALT cap. "
-            "The federal cap exists but Ohio allows FULL property tax deduction on the state return. "
-            "This error could cost the taxpayer $2,000+ in missed deductions."
+            "WRONG: Section 24(b) home loan interest deduction limit is actually ₹2,00,000 for self-occupied properties. "
+            "The baseline agent applied an incorrect cap of ₹1,00,000, costing the taxpayer ₹1,00,000 in deductions."
         ),
     ))
     trace.errors.append(
-        "🚨 Applied federal $10k SALT cap to Ohio state return — Ohio has NO SALT cap. "
-        "Full property tax is deductible on IT-1040. Potential cost: $2,000+ in overpaid tax."
+        "🚨 Applied incorrect ₹100k cap to Section 24(b) home loan interest — actual limit is ₹200k. "
+        "Taxpayer loses ₹1,00,000 in deductions. Potential cost: ₹20,000+ in overpaid tax."
     )
     trace.missed_edge_cases.append(
-        "❌ Applied SALT cap incorrectly — Ohio allows full property tax deduction"
+        "❌ Applied incorrect home loan interest limit — missed ₹1,00,000 in eligible deductions"
     )
 
-    # ── Step 5: Tax bracket calculation ───────────────────────────────────
+    # ── Step 5: Tax slab calculation (WITH ERROR) ─────────────────────────
     trace.steps.append(BaselineStep(
         step_number=5,
-        action="calculate_tax",
+        action="calculate_tax_slabs",
         reasoning=(
-            "Ohio has graduated tax brackets. For 2024, the rates range from about "
-            "0.5% to 4%. Let me apply the brackets to the taxable income."
+            "Let's apply the graduated tax slabs. For FY 2024-25, under the Old Tax Regime, "
+            "the slabs start tax-free up to ₹2.5 Lakhs, then 5% up to ₹5 Lakhs, and 20% beyond that."
         ),
         output=(
-            "Applied Ohio tax brackets: ~$2,350 estimated Ohio income tax. "
-            "Used rates: 0%-$25,000 at 0.5%, $25,001-$100,000 at 2.5%, over $100,000 at 3.5%"
+            "Applied tax slabs: ₹37,000 estimated tax liability under Old Regime. "
+            "Used old tax slabs: 0% up to ₹2.5L, 5% from ₹2.5L to ₹5L, 20% from ₹5L to ₹10L."
         ),
         tokens_used=720,
         latency_ms=1300,
         correct=False,
         missed_edge_case=(
-            "Used OUTDATED brackets. 2024 Ohio brackets are: "
-            "$0-$26,050 at 0%, $26,051-$100,000 at 2.765%, $100,001-$115,300 at 3.226%, "
-            "$115,301+ at 3.688%. The 0% bracket especially matters — first $26k is tax-free."
+            "Used outdated brackets. For FY 2024-25, under New Tax Regime, the "
+            "slabs are much lower (₹0-3L 0%, ₹3-6L 5%, ₹6-9L 10%). The agent "
+            "failed to compare and recommend the New Regime which has a standard deduction of ₹75,000."
         ),
     ))
     trace.errors.append(
-        "🚨 Used outdated tax brackets — Ohio restructured brackets for 2024. "
-        "First $26,050 is now TAX-FREE (0% rate). Calculated tax is wrong."
+        "🚨 Used outdated tax brackets and failed to compare with New Tax Regime (slabs restructured for FY 2024-25). "
+        "Standard deduction in New Regime is ₹75,000. Calculated tax is sub-optimal."
     )
 
-    # ── Step 6: Credits ───────────────────────────────────────────────────
+    # ── Step 6: Apply credits & rebates (WITH ERROR) ──────────────────────
     trace.steps.append(BaselineStep(
         step_number=6,
-        action="apply_credits",
+        action="apply_credits_rebates",
         reasoning=(
-            "I should check for applicable Ohio tax credits. The main ones are "
-            "the earned income credit and retirement income credit."
+            "I should check for applicable tax rebates. Section 87A rebate applies to taxable income."
         ),
-        output="Applied earned income credit. No other credits identified.",
+        output="No rebates or credits applied. Net tax estimated at ₹37,000.",
         tokens_used=410,
         latency_ms=900,
         correct=False,
         missed_edge_case=(
-            "Missed Joint Filing Credit ($650 for married filing jointly — AUTOMATIC). "
-            "Also missed checking for local tax credits."
+            "Missed Section 87A rebate comparison (for taxable income up to ₹7,00,000 in New Tax Regime, rebate is 100%). "
+            "Also missed taking deduction of Tamil Nadu Professional Tax paid under Section 16(iii) (₹2,500)."
         ),
     ))
     trace.errors.append(
-        "🚨 Missed $650 Joint Filing Credit — automatic for all MFJ Ohio filers"
+        "🚨 Missed Section 87A rebate eligibility check and Chennai Professional Tax deduction under Section 16(iii)"
     )
     trace.missed_edge_cases.append(
-        "❌ Missed Joint Filing Credit ($650) — automatic for married filing jointly"
+        "❌ Missed Tamil Nadu Professional Tax deduction (₹2,500) under Section 16(iii) for Old Regime"
     )
 
-    # ── Step 7: Local taxes (INCOMPLETE) ──────────────────────────────────
+    # ── Step 7: Local/Professional taxes (INCOMPLETE) ────────────────────
     trace.steps.append(BaselineStep(
         step_number=7,
         action="local_taxes",
         reasoning=(
-            "Ohio may have local income taxes. I should mention that the user "
-            "may need to check their local municipality for additional tax requirements."
+            "Tamil Nadu levies a Professional Tax. I should advise the user to contact their employer "
+            "or checking local corporation tables for professional tax details."
         ),
         output=(
-            "Note: Some Ohio municipalities levy local income taxes. "
-            "The user should check their local tax rate. This is outside the scope "
-            "of state filing."
+            "Note: Greater Chennai Corporation levies professional tax. "
+            "The user should check with their payroll department if it is deducted. "
+            "This is considered a municipal filing rather than a federal tax filing requirement."
         ),
         tokens_used=350,
         latency_ms=700,
         correct=False,
         missed_edge_case=(
-            "Ohio local taxes are NOT optional — nearly all Ohio cities/school districts "
-            "levy income tax. Columbus is 2.5%. This is a REQUIRED filing, not a 'maybe check'. "
-            "Should have identified RITA/CCA filing requirement and work-city vs residence-city rules."
+            "Tamil Nadu Professional Tax is mandatory — salaried employees earning above ₹75,000 per half-year "
+            "owe ₹1,250 half-yearly (₹2,500 per year). If the employer does not deduct it, it must be paid "
+            "separately online to Greater Chennai Corporation, and claimed as deduction under Section 16(iii)."
         ),
     ))
     trace.errors.append(
-        "🚨 Treated local taxes as optional — Ohio local income tax is mandatory "
-        "for most residents (Columbus: 2.5%). Should file city return via RITA/CCA."
+        "🚨 Treated Professional Tax as optional check — it is a mandatory half-yearly levy "
+        "(Chennai GCC: ₹1,250 per half-year). Must ensure employer deducted it or file online."
     )
     trace.missed_edge_cases.append(
-        "❌ Dismissed local taxes as 'optional' — they are mandatory for most Ohio cities"
+        "❌ Dismissed Professional Tax as 'optional corporate check' — it is a mandatory municipal tax"
     )
 
     # ── Step 8: Filing recommendation ─────────────────────────────────────
@@ -246,13 +243,13 @@ def run_baseline_agent(task: str) -> BaselineTrace:
             "Let me summarize the filing recommendation for the user."
         ),
         output=(
-            "Summary: File IT-1040 with itemized deductions. Estimated Ohio tax: ~$2,350. "
-            "Use Ohio eFile to submit electronically. Consider checking local tax requirements."
+            "Summary: File ITR-1 under Old Regime. Estimated tax: ₹37,000 + 4% Cess = ₹38,480. "
+            "Submit via Income Tax e-filing portal. Check local Professional Tax if applicable."
         ),
         tokens_used=480,
         latency_ms=1000,
         correct=False,
-        missed_edge_case="Final tax estimate is wrong due to compounding errors above",
+        missed_edge_case="Final tax estimate and regime choice are sub-optimal due to compounding errors above",
     ))
 
     # ── Totals ────────────────────────────────────────────────────────────
